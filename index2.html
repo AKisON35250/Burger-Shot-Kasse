@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Burger Shot Kassenrechner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fce4ec;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #c62828;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      background: #c62828;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #e53935;
+    }
+    .cart {
+      border-top: 2px solid #ddd;
+      padding-top: 15px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #2e7d32;
+    }
+    .reset {
+      background: #444;
+      margin-top: 15px;
+    }
+    .reset:hover {
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍔 Burger Shot Kassenrechner</h1>
+
+    <h2>Produkte</h2>
+    <div class="buttons" id="productButtons"></div>
+
+    <div class="cart">
+      <h2>🛒 Warenkorb</h2>
+      <div id="cartItems"></div>
+      <div class="total">Gesamt: $<span id="totalPrice">0.00</span></div>
+      <button class="reset" onclick="resetCart()">🗑 Warenkorb leeren</button>
+    </div>
+  </div>
+
+  <script>
+    // Beispiel-Produkte (hier kannst du alle Burger, Drinks, Desserts eintragen)
+    const products = [
+      { name: "Cheeseburger", price: 5.00 },
+      { name: "Double Burger", price: 7.50 },
+      { name: "Veggie Burger", price: 6.00 },
+      { name: "Cola", price: 2.00 },
+      { name: "Milkshake", price: 3.50 },
+      { name: "Pommes", price: 2.50 },
+      { name: "Donut", price: 1.50 },
+      { name: "Lavacake", price: 1.50 }
+    ];
+
+    let cart = [];
+
+    function renderProducts() {
+      const container = document.getElementById("productButtons");
+      products.forEach((p, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = `${p.name} ($${p.price.toFixed(2)})`;
+        btn.onclick = () => addToCart(index);
+        container.appendChild(btn);
+      });
+    }
+
+    function addToCart(index) {
+      const product = products[index];
+      cart.push(product);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartContainer = document.getElementById("cartItems");
+      cartContainer.innerHTML = "";
+      let total = 0;
+      cart.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `<span>${item.name}</span><span>$${item.price.toFixed(2)}</span>`;
+        cartContainer.appendChild(div);
+        total += item.price;
+      });
+      document.getElementById("totalPrice").innerText = total.toFixed(2);
+    }
+
+    function resetCart() {
+      cart = [];
+      renderCart();
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
